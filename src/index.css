@@ -1,11 +1,5 @@
-
 @import "tw-animate-css";
-
-/* @custom-variant dark (&:is(.dark *));
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities; */
+@import "tailwindcss";
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -93,6 +87,16 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+#root {
+  margin: auto;
+  padding: 2em;
+  border-radius: var(--radius);
+  background-color: var(--background);
+  color: var(--foreground);
+  box-shadow: 0 0 0 1px var(--border), 0 10px 20px -5px var(--ring),
+    0 4px 20px -5px var(--ring);
 }
 
 @media (prefers-color-scheme: light) {
