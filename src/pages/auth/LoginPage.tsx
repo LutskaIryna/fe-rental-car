@@ -22,9 +22,11 @@ export function LoginForm() {
   const onSubmit = async (data: LoginForm) => {
     try {
       const result = await loginUser(data.email, data.password);
+      console.log(result);
+      
       dispatch(login({ user: { email: data.email }, token: result.access_token }));
       localStorage.setItem("access_token", result.access_token);
-      navigate("/cars");
+      navigate("/");
     } catch (err: any) {
       alert(err.message);
     }
