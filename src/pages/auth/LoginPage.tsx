@@ -10,7 +10,7 @@ type LoginForm = {
   password: string;
 };
 
-export function LoginForm() {
+export const LoginForm = () => {
   const dispatch = useDispatch();
   const {
     register,
@@ -22,11 +22,11 @@ export function LoginForm() {
   const onSubmit = async (data: LoginForm) => {
     try {
       const result = await loginUser(data.email, data.password);
-      console.log(result);
       
       dispatch(login({ user: { email: data.email }, token: result.access_token }));
       localStorage.setItem("access_token", result.access_token);
       navigate("/");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       alert(err.message);
     }
@@ -38,7 +38,5 @@ export function LoginForm() {
       errors={errors}
       onSubmit={handleSubmit(onSubmit)}
     />
-  
-    
   );
 }
