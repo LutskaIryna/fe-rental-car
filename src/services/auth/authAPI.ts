@@ -1,3 +1,4 @@
+import { UserRole } from "@/types/enums";
 import { httpRequest } from "../common/httpClient";
 
 export const loginUser = async (email: string, password: string) => {
@@ -9,6 +10,23 @@ export const loginUser = async (email: string, password: string) => {
     }
   );
 };
+
+export const logoutUser = async (accessToken: string) => {
+  return httpRequest< { message: string }, void>(
+    "/auth/logout",
+    {
+      method: "POST",
+      token: accessToken,
+    }
+  );
+};
+
+export const getUserInfo = async (accessToken: string) => {
+  return httpRequest<{ accessToken: string }, { email: string; role: UserRole; id: string}>( 
+    "/user/me", {
+    method: "GET",
+    token: accessToken,
+  })}
 
 export const registerUserWithRole = async (
   email: string,

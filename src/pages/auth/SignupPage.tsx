@@ -10,7 +10,7 @@ type RegisterForm = {
   role: string;
 };
 
-export function SignupForm({ hasUserAdminRole = false }: { hasUserAdminRole?: boolean }) {
+export const SignupForm = ({ hasUserAdminRole = false }: { hasUserAdminRole?: boolean }) =>{
   const {
     register,
     handleSubmit,
@@ -34,6 +34,7 @@ export function SignupForm({ hasUserAdminRole = false }: { hasUserAdminRole?: bo
       await registerUserWithRole(data.email, data.password, data.role, token);
       alert("User registered successfully");
       navigate("/login");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       alert(err.message);
     }
