@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
-import { registerUserWithRole } from "@/services/auth/authAPI";
 import { AuthForm } from "../../components/forms/AuthForm";
 import { useNavigate } from "react-router-dom";
+import { useRegisterUserWithRoleMutation } from "@/store/api/auth.api";
 
 type RegisterForm = {
   email: string;
@@ -17,6 +17,7 @@ export const SignupForm = ({ hasUserAdminRole = false }: { hasUserAdminRole?: bo
     formState: { errors },
   } = useForm<RegisterForm>();
   const navigate = useNavigate();
+  const [registerUserWithRole] = useRegisterUserWithRoleMutation();
 
   const onSubmit = async (data: RegisterForm) => {
     if (data.password !== data.confirmPassword) {
@@ -31,10 +32,9 @@ export const SignupForm = ({ hasUserAdminRole = false }: { hasUserAdminRole?: bo
     }
 
     try {
-      await registerUserWithRole(data.email, data.password, data.role, token);
+      await registerUserWithRole({email: data.email, password: data.password, role: data.role, accessToken: token});
       alert("User registered successfully");
       navigate("/login");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       alert(err.message);
     }

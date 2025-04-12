@@ -1,9 +1,7 @@
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { login } from "@/store/authSlice";
-import { loginUser } from "@/services/auth/authAPI";
 import { AuthForm } from "../../components/forms/AuthForm";
 import { useNavigate } from "react-router-dom";
+import { useLoginUserMutation } from "@/store/api/auth.api";
 
 type LoginForm = {
   email: string;
@@ -11,22 +9,21 @@ type LoginForm = {
 };
 
 export const LoginForm = () => {
-  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginForm>();
   const navigate = useNavigate();
+  
+   // initialize the hook (without parameters)
+    const [loginUser] = useLoginUserMutation();
 
   const onSubmit = async (data: LoginForm) => {
     try {
-      const result = await loginUser(data.email, data.password);
-      
-      dispatch(login({ user: { email: data.email }, token: result.access_token }));
-      localStorage.setItem("access_token", result.access_token);
+       // We pass the email and password when calling the function, not when using the hook
+      await loginUser({ email:data.email, password: data.password}).unwrap();
       navigate("/");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       alert(err.message);
     }
