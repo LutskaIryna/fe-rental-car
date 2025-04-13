@@ -32,7 +32,7 @@ export const SignupForm = ({ hasUserAdminRole = false }: { hasUserAdminRole?: bo
     }
 
     try {
-      await registerUserWithRole({email: data.email, password: data.password, role: data.role, accessToken: token});
+      await registerUserWithRole({email: data.email, password: data.password, role: data.role});
       alert("User registered successfully");
       navigate("/login");
     } catch (err: any) {

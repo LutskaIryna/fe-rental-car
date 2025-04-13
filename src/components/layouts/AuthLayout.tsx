@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Outlet } from "react-router-dom";
 
-export default function AuthLayout() {
+export const AuthLayout = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
       <div className="max-w-md w-full">

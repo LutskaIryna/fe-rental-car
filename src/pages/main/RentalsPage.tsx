@@ -1,4 +1,4 @@
-export default function RentalsPage() {
+export const RentalsPage = () => {
   return (
     <div>
       <h1>Rentals Page</h1>

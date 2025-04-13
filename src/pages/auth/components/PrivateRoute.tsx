@@ -19,7 +19,7 @@ const PrivateRoute = () => {
  useEffect(() => {
     if (user) {
       setStatus(user.role);
-    } else if (!token && !user) {
+    } else if (!token ) {
       setStatus("unauthorized");
     }
   }, [token, user]);
