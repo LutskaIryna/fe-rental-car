@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { useRegisterUserWithRoleAdminMutation } from "@/store/api/auth.api";
+import { toast } from "sonner";
 
 type FormData = {
   email: string;
@@ -34,10 +35,10 @@ export const AdminCreateModal = () => {
       }).unwrap();
  
       reset();
-      alert("Admin created successfully!");
+      toast.success("Admin created successfully!");
     } catch (error: any) {
       console.error("Failed to create admin:", error);
-      alert(error?.data?.message || "Failed to create admin");
+      toast.error(error?.data?.message || "Failed to create admin");
     }
   };
 

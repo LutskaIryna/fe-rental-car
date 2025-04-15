@@ -1,38 +1,35 @@
 import { useEffect, useState } from "react";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
 import { UserStatus } from "@/types/types";
 import { UserRole } from "@/types/enums";
 import { useGetUserQuery } from "@/store/api/auth.api";
+import { navigationStrategies }  from "@/strategies/navigation";
+import { selectAuthToken, selectUserRole } from "@/store/selectors/authSelectors";
 
 const PrivateRoute = () => {
   const location = useLocation();
-  const token = useSelector((state: RootState) => state.auth.token);
-  const user = useSelector((state: RootState) => state.auth.user);
+  const token = useSelector(selectAuthToken);
+  const role = useSelector(selectUserRole);
   const [status, setStatus] = useState<UserStatus>("loading");
 
   useGetUserQuery(undefined, {
-    skip: !!user || !token, // Skip the query if user is already set or token is not available
+    skip: !!role || !token, // Skip the query if user is already set or token is not available
   });
 
  useEffect(() => {
-    if (user) {
-      setStatus(user.role);
+    if (role) {
+      setStatus('default');
     } else if (!token ) {
       setStatus("unauthorized");
     }
-  }, [token, user]);
+  }, [token, role]);
 
-  if (status === "loading") return null; // or <Spinner />
-
-  if (status === "unauthorized") return <Navigate to="/login" replace />;
-
-  if (status === UserRole.USER && location.pathname === "/admin") {
-    return <Navigate to="/cars" replace />;
+  if (role === UserRole.USER && location.pathname === "/admin") {
+    return navigationStrategies.adminRedirect();
   }
 
-  return <Outlet />;
+  return navigationStrategies[status]();
 };
 
 export default PrivateRoute;

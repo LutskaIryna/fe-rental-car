@@ -3,7 +3,7 @@ import authReducer from "@/store/slices/authSlice";
 import { api } from "./api/api";
 import { authApi } from "./api/auth.api";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import { clearApiCache } from "./middlewares/clearApiCache";
+import { authListenerMiddleware } from "./middlewares/authMiddleware";
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +11,9 @@ export const store = configureStore({
     [api.reducerPath]: api.reducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware, clearApiCache),
+    getDefaultMiddleware()
+    .prepend(authListenerMiddleware.middleware) 
+    .concat(authApi.middleware),
 });
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors

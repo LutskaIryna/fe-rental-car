@@ -1,4 +1,6 @@
+import { selectUserRole } from "@/store/selectors/authSelectors";
 import { UserRole } from "@/types/enums";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 const navItems = [
@@ -7,7 +9,9 @@ const navItems = [
   { label: "Admin", to: "/admin", roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN] },
 ];
 
-export const renderNavLinks = (userRole: UserRole) => {
+export const NavLinks = () => {
+  const userRole = useSelector(selectUserRole) || UserRole.USER;
+
   return navItems
     .filter(({ roles }) => {
       if (roles) {

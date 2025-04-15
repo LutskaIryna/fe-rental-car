@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { AuthForm } from "../../components/forms/AuthForm";
 import { useNavigate } from "react-router-dom";
 import { useLoginUserMutation } from "@/store/api/auth.api";
+import { toast } from "sonner";
 
 type LoginForm = {
   email: string;
@@ -15,7 +16,7 @@ export const LoginForm = () => {
     formState: { errors },
   } = useForm<LoginForm>();
   const navigate = useNavigate();
-  
+
    // initialize the hook (without parameters)
     const [loginUser] = useLoginUserMutation();
 
@@ -25,7 +26,7 @@ export const LoginForm = () => {
       await loginUser({ email:data.email, password: data.password}).unwrap();
       navigate("/");
     } catch (err: any) {
-      alert(err.message);
+      toast.error(err.message);
     }
   };
 

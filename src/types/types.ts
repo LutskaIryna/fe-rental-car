@@ -1,3 +1,4 @@
+import { navigationStrategies } from "@/strategies/navigation";
 import { UserRole } from "./enums";
 
 export type User = {
@@ -5,4 +6,5 @@ export type User = {
   role: UserRole;
   email: string;
 };
-export type UserStatus = "loading" | "unauthorized" | UserRole;
+
+export type UserStatus = keyof typeof navigationStrategies;
