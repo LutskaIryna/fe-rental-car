@@ -17,13 +17,13 @@ type Props<T extends BaseForm> = {
   hasUserAdminRole?: boolean;
 };
 
-export function AuthForm<T extends BaseForm>({
+export const  AuthForm = <T extends BaseForm>({
   register,
   errors,
   onSubmit,
   isSignup = false,
   hasUserAdminRole = false,
-}: Props<T>) {
+}: Props<T>) => {
   return (
     <form onSubmit={onSubmit} className="space-y-4">
       {isSignup && hasUserAdminRole && (
