@@ -53,3 +53,4 @@ export default tseslint.config({
 })
 ```
 npx shadcn@latest add [ui component]
+tailwind

@@ -1,5 +1,5 @@
 import { Navigate, useRoutes } from "react-router-dom";
-import CarsPage from '@/pages/main/CarsPage';
+import CarsPage from '@/pages/main/cars/CarsPage';
 import { LoginForm } from '@/pages/auth/LoginPage';
 import { SignupForm } from '@/pages/auth/SignupPage';
 import { RentalsPage } from '@/pages/main/RentalsPage';

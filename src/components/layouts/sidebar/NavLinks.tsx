@@ -12,24 +12,29 @@ const navItems = [
 export const NavLinks = () => {
   const userRole = useSelector(selectUserRole) || UserRole.USER;
 
-  return navItems
-    .filter(({ roles }) => {
-      if (roles) {
-        return roles.includes(userRole);
-      }
-      return true;
-    })
-    .map(({ label, to }) => (
-      <NavLink
-        key={to}
-        to={to}
-        className={({ isActive }) =>
-          `text-base px-2 py-1 rounded ${
-            isActive ? "bg-muted font-semibold" : "hover:underline"
-          }`
+  return (
+    <nav className="flex flex-col gap-4 p-4">
+    {navItems
+      .filter(({ roles }) => {
+        if (roles) {
+          return roles.includes(userRole);
         }
-      >
-        {label}
-      </NavLink>
-    ));
+        return true;
+      })
+      .map(({ label, to }) => (
+        <NavLink
+          key={to}
+          to={to}
+          className={({ isActive }) =>
+            `text-base px-2 py-1 rounded ${
+              isActive ? "bg-muted font-semibold" : "hover:underline"
+            }`
+          }
+        >
+          {label}
+        </NavLink>
+      ))
+    }
+  </nav>
+  )
 };
