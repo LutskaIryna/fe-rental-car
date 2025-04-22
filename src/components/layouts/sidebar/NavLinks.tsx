@@ -1,27 +1,23 @@
+import { useNavLinks } from "@/hooks/useUser";
 import { selectUserRole } from "@/store/selectors/authSelectors";
 import { UserRole } from "@/types/enums";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
-const navItems = [
-  { label: "Rentals", to: "/rentals" },
-  { label: "Cars", to: "/cars" },
+export const navItems = [
+  { label: "Rentals", to: "/rentals", roles: [UserRole.USER, UserRole.ADMIN, UserRole.SUPER_ADMIN] },
+  { label: "Cars", to: "/cars", roles: [UserRole.USER, UserRole.ADMIN, UserRole.SUPER_ADMIN] },
   { label: "Admin", to: "/admin", roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN] },
 ];
 
+
 export const NavLinks = () => {
   const userRole = useSelector(selectUserRole) || UserRole.USER;
+  const navLinks = useNavLinks(userRole);
 
   return (
     <nav className="flex flex-col gap-4 p-4">
-    {navItems
-      .filter(({ roles }) => {
-        if (roles) {
-          return roles.includes(userRole);
-        }
-        return true;
-      })
-      .map(({ label, to }) => (
+      {navLinks.map(({ label, to }) => (
         <NavLink
           key={to}
           to={to}
@@ -33,8 +29,7 @@ export const NavLinks = () => {
         >
           {label}
         </NavLink>
-      ))
-    }
-  </nav>
-  )
+      ))}
+    </nav>
+  );
 };
