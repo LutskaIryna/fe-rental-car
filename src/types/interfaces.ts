@@ -6,3 +6,15 @@ export interface ErrorResponse {
   };
   status: number;
 }
+
+export interface ICarFormData {
+  vin: string;
+  brand: string;
+  model: string;
+  color: string;
+  plateNumber: string;
+  year: string;
+}
+export interface ICar extends ICarFormData {
+  id: string;
+}

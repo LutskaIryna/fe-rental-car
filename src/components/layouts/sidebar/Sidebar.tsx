@@ -14,9 +14,7 @@ export const AppSidebar = () => {
       <SidebarHeader />
       <SidebarContent>
         <SidebarGroup >
-          <nav className="flex flex-col gap-4 p-4">
             <NavLinks />
-          </nav>
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
