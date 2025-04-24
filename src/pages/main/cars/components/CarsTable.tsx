@@ -1,6 +1,6 @@
 import { ICar } from "@/types/interfaces";
 import { useGetCarsQuery } from "@/store/api/car.api";
-import { useIsAdmin } from "@/hooks/useUser";
+// import { useIsAdmin } from "@/hooks/useUser";
 import { CarAction } from "./CarAction";
 
 const columns = [  
@@ -29,10 +29,8 @@ const columns = [
 
 const CarsTable = () => {
   
-  const isAdmin = useIsAdmin();
-  const { data } = useGetCarsQuery(undefined, {
-    skip: !isAdmin,
-  });
+  // const isAdmin = useIsAdmin();
+  const { data } = useGetCarsQuery();
   
   const cars: ICar[] = data || []; 
 
@@ -58,7 +56,7 @@ const CarsTable = () => {
                 <td className="px-4 py-2">{car.year}</td>
                 <td className="px-4 py-2">{car.vin}</td>
                 <td className="px-4 py-2">
-                  {isAdmin && <CarAction id={car.id} />}
+                  <CarAction car={car} />
                 </td>
               </tr>
             ))}
