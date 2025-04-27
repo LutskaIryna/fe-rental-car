@@ -1,12 +1,14 @@
-import { IRental } from "@/types/interfaces";
+import { ICar, IRental } from "@/types/interfaces";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type  RentalState = {
-  activeUserRental: IRental | null;
+  activeUserRental: IRental | null;  
+  avaliableCars: ICar[] | null;
 }
 
 const initialState: RentalState = {
-  activeUserRental: null
+  activeUserRental: null,
+  avaliableCars: null
 }
 
 const rentalSlice = createSlice({
@@ -15,9 +17,12 @@ const rentalSlice = createSlice({
   reducers: {
     setActiveUserRental:(state, action: PayloadAction<IRental | null>) => {
       state.activeUserRental = action.payload
+    },
+    setAvaliableCars: (state, action: PayloadAction<ICar[]>) => {
+      state.avaliableCars = action.payload
     }
   }
 })
 
-export const { setActiveUserRental } = rentalSlice.actions;
+export const { setActiveUserRental, setAvaliableCars } = rentalSlice.actions;
 export default rentalSlice.reducer;

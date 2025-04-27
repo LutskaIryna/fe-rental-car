@@ -5,8 +5,8 @@ import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 export const navItems = [
-  { label: "Rentals", to: "/rentals", roles: [UserRole.USER, UserRole.ADMIN, UserRole.SUPER_ADMIN] },
-  { label: "Cars", to: "/cars", roles: [UserRole.USER, UserRole.ADMIN, UserRole.SUPER_ADMIN] },
+  { label: "Rentals", to: "/rentals", roles: [UserRole.USER] },
+  { label: "Cars", to: "/cars", roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN] },
   { label: "Admin", to: "/admin", roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN] },
 ];
 

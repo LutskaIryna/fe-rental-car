@@ -1,7 +1,8 @@
 import { toast } from "sonner";
-import { setAvaliableCars, setCars } from "../slices/carSlice";
+import { setCars } from "../slices/carSlice";
 import { api } from "./api";
 import { ICarFormData } from "@/types/interfaces";
+import { setAvaliableCars } from "../slices/rentalSlice";
 
 export const authApi = api.injectEndpoints({
   endpoints: builder => ({
