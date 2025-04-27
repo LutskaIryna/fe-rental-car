@@ -18,3 +18,16 @@ export interface ICarFormData {
 export interface ICar extends ICarFormData {
   id: string;
 }
+
+export interface IRentalFormData {
+  userId: string;
+  carId: string;
+  startDate: string;
+  endDate: string;
+  isActive: boolean;
+}
+
+export interface IRental extends IRentalFormData {
+  id: string;
+  car: ICar;
+}

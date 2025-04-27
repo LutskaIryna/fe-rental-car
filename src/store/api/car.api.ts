@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import { setCars } from "../slices/carSlice";
+import { setAvaliableCars, setCars } from "../slices/carSlice";
 import { api } from "./api";
 import { ICarFormData } from "@/types/interfaces";
 
@@ -14,6 +14,20 @@ export const authApi = api.injectEndpoints({
           const { data } = await queryFulfilled;
           if (data) {
             dispatch(setCars(data));
+          }
+        } catch (error) {
+          console.error("Error while fetching cars:", error)
+          toast.error("Error while fetching cars")
+        }
+      }
+    }),
+    getAvailableCars: builder.query<any, void>({
+      query: () => "/rental/available",
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          if (data) {
+            dispatch(setAvaliableCars(data));
           }
         } catch (error) {
           console.error("Error while fetching cars:", error)
@@ -42,5 +56,8 @@ export const authApi = api.injectEndpoints({
 export const {
   useGetCarsQuery,
   useDeleteCarMutation,
+  useGetAvailableCarsQuery,
   useCreateCarMutation
 } = authApi;
+
+

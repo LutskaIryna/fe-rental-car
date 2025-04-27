@@ -3,21 +3,26 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type  CarState = {
   cars: ICar[] | null;
+  avaliableCars: ICar[] | null;
 }
 
 const initialState: CarState = {
-  cars: null
+  cars: null,
+  avaliableCars: null
 }
 
 const carSlice = createSlice({
-  name: 'auth',
+  name: 'car',
   initialState,
   reducers: {
     setCars: (state, action: PayloadAction<ICar[]>) => {
       state.cars = action.payload;
+    },
+    setAvaliableCars: (state, action: PayloadAction<ICar[]>) => {
+      state.avaliableCars = action.payload
     }
   }
 });
 
-export const { setCars } = carSlice.actions;
+export const { setCars, setAvaliableCars } = carSlice.actions;
 export default carSlice.reducer;
