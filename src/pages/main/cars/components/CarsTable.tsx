@@ -1,5 +1,4 @@
 import { ICar } from "@/types/interfaces";
-import { useGetCarsQuery } from "@/store/api/car.api";
 import { useIsAdmin } from "@/hooks/useUser";
 import { CarAction } from "./CarAction";
 
@@ -27,14 +26,13 @@ const columns = [
   },
 ];
 
-const CarsTable = () => {
+interface CarsTableProps {
+  cars: ICar[];
+}
+
+const CarsTable = ({ cars }: CarsTableProps) => {
   
   const isAdmin = useIsAdmin();
-  const { data } = useGetCarsQuery(undefined, {
-    skip: !isAdmin,
-  });
-  
-  const cars: ICar[] = data || []; 
 
   return (    
       <div className="overflow-x-auto">
