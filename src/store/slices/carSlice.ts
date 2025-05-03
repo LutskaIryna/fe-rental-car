@@ -6,16 +6,17 @@ type  CarState = {
 }
 
 const initialState: CarState = {
-  cars: null
+  cars: null,
+  
 }
 
 const carSlice = createSlice({
-  name: 'auth',
+  name: 'car',
   initialState,
   reducers: {
     setCars: (state, action: PayloadAction<ICar[]>) => {
       state.cars = action.payload;
-    }
+    },
   }
 });
 
