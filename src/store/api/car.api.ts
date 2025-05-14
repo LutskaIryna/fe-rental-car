@@ -2,46 +2,24 @@ import { toast } from "sonner";
 import { setCars } from "../slices/carSlice";
 import { api } from "./api";
 import { ICarFormData } from "@/types/interfaces";
-import { setAvaliableCars, setRentedCars } from "../slices/rentalSlice";
+import { RentalStateOfCar } from "@/types/enums";
 
 export const carApi = api.injectEndpoints({
   endpoints: (builder) => ({
-    getCars: builder.query<any, void>({
-      query: () => "/rental-cars",
+    getCars: builder.query<
+      any,
+      { filter: RentalStateOfCar; brand?: string; vin?: string; model?: string }
+    >({
+      query: ({ filter }) => ({
+        url: "/rental-cars",
+        params: { filter },
+      }),
       providesTags: ["Cars"],
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
           if (data) {
             dispatch(setCars(data));
-          }
-        } catch (error) {
-          console.error("Error while fetching cars:", error);
-          toast.error("Error while fetching cars");
-        }
-      },
-    }),
-    getAvailableCars: builder.query<any, void>({
-      query: () => "/rental/available",
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          if (data) {
-            dispatch(setAvaliableCars(data));
-          }
-        } catch (error) {
-          console.error("Error while fetching cars:", error);
-          toast.error("Error while fetching cars");
-        }
-      },
-    }),
-    getRentedCars: builder.query<any, void>({
-      query: () => "/rental/rented",
-      async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          if (data) {
-            dispatch(setRentedCars(data));
           }
         } catch (error) {
           console.error("Error while fetching cars:", error);
@@ -67,10 +45,4 @@ export const carApi = api.injectEndpoints({
   }),
 });
 
-export const {
-  useGetCarsQuery,
-  useDeleteCarMutation,
-  useGetAvailableCarsQuery,
-  useCreateCarMutation,
-  useGetRentedCarsQuery,
-} = carApi;
+export const { useGetCarsQuery, useDeleteCarMutation, useCreateCarMutation } = carApi;

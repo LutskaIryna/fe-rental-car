@@ -1,6 +1,7 @@
 import { ICar } from "@/types/interfaces";
 import { useIsAdmin } from "@/hooks/useUser";
 import { CarAction } from "./CarAction";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const columns = [  
   {
@@ -28,42 +29,58 @@ const columns = [
 
 interface CarsTableProps {
   cars: ICar[];
+  isLoading: boolean;
 }
 
-const CarsTable = ({ cars }: CarsTableProps) => {
-  
+export const CarsTable = ({ cars, isLoading }: CarsTableProps) => {
   const isAdmin = useIsAdmin();
 
-  return (    
-      <div className="overflow-x-auto">
-        <table className="min-w-full border border-gray-200 rounded-lg">
-          <thead className="bg-gray-100">
-            <tr>
-              {columns.map((column) => (
-                <th key={column.name} className="px-4 py-2 text-left">
-                  {column.name}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {cars.map((car) => (
-              <tr key={car.id} className="border-t">
-                <td className="px-4 py-2">{car.brand}</td>
-                <td className="px-4 py-2">{car.model}</td>
-                <td className="px-4 py-2">{car.color}</td>
-                <td className="px-4 py-2">{car.plateNumber}</td>
-                <td className="px-4 py-2">{car.year}</td>
-                <td className="px-4 py-2">{car.vin}</td>
-                <td className="px-4 py-2">
-                  {isAdmin && <CarAction id={car.id} />}
-                </td>
-              </tr>
+  const rowsToShow: (ICar | undefined)[] = isLoading ? Array.from({ length: 5 }).map(() => undefined) : cars;
+
+  return (
+    <div className="overflow-x-auto">
+      <table className="min-w-full border border-gray-200 rounded-lg">
+        <thead className="bg-gray-100">
+          <tr>
+            {columns.map((column) => (
+              <th key={column.name} className="px-4 py-2 text-left">
+                {column.name}
+              </th>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </tr>
+        </thead>
+        <tbody>
+          {rowsToShow.map((car, index) => (
+            <tr key={car?.id || index} className="border-t">
+              <td className="px-4 py-2">
+                {isLoading ? <Skeleton className="h-4 w-24" /> : car?.brand}
+              </td>
+              <td className="px-4 py-2">
+                {isLoading ? <Skeleton className="h-4 w-24" /> : car?.model}
+              </td>
+              <td className="px-4 py-2">
+                {isLoading ? <Skeleton className="h-4 w-20" /> : car?.color}
+              </td>
+              <td className="px-4 py-2">
+                {isLoading ? <Skeleton className="h-4 w-28" /> : car?.plateNumber}
+              </td>
+              <td className="px-4 py-2">
+                {isLoading ? <Skeleton className="h-4 w-16" /> : car?.year}
+              </td>
+              <td className="px-4 py-2">
+                {isLoading ? <Skeleton className="h-4 w-32" /> : car?.vin}
+              </td>
+              <td className="px-4 py-2">
+                {isLoading ? (
+                  <Skeleton className="h-8 w-8 rounded" />
+                ) : (
+                  isAdmin && <CarAction id={car?.id || ''} />
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
-
-export default CarsTable;

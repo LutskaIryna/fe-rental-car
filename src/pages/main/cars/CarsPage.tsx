@@ -1,8 +1,8 @@
-import CarsTable from "./components/CarsTable";
+import { CarsTable }from "./components/CarsTable";
 import { CarCreateModal } from "./components/CarCreateModal";
 import { FilterCar } from "./components/filterCar";
-import { useGetCarsQuery, useGetAvailableCarsQuery, useGetRentedCarsQuery } from "@/store/api/car.api";
-import { useEffect, useState } from "react";
+import { useGetCarsQuery } from "@/store/api/car.api";
+import { useState } from "react";
 import { RentalStateOfCar } from "@/types/enums";
 import { useIsAdmin } from "@/hooks/useUser";
 
@@ -12,21 +12,10 @@ export default function CarsPage() {
   const initialFilter = isAdmin ? RentalStateOfCar.ALL : RentalStateOfCar.AVAILABLE;
   const [filter, setFilter] = useState<RentalStateOfCar>(initialFilter);
 
-  useEffect(() => {
-    if (!isAdmin && filter !== RentalStateOfCar.AVAILABLE) {
-      setFilter(RentalStateOfCar.AVAILABLE);
-    }
-  }, [filter, isAdmin]);
-  
-  const { data: allCars } = useGetCarsQuery(undefined, { skip: filter !== RentalStateOfCar.ALL ||  !isAdmin});
-  const { data: availableCars } = useGetAvailableCarsQuery(undefined, { skip: filter !== RentalStateOfCar.AVAILABLE });
-  const { data: rentedCars } = useGetRentedCarsQuery(undefined, { skip: filter !== RentalStateOfCar.RENTED || !isAdmin});
-
-  const cars =  {
-    [RentalStateOfCar.ALL]: allCars,
-    [RentalStateOfCar.AVAILABLE]: availableCars,
-    [RentalStateOfCar.RENTED]: rentedCars,
-  }
+  const { data: cars = [], isLoading } = useGetCarsQuery(
+    { filter },
+    { skip: !filter || (!isAdmin && filter !== RentalStateOfCar.AVAILABLE) }
+  );
 
   return (
     <div className="p-6">
@@ -37,7 +26,7 @@ export default function CarsPage() {
           <CarCreateModal />
         </div>
       </div>
-      <CarsTable cars={cars[filter] || []} />
+      <CarsTable cars={cars} isLoading={isLoading} />
     </div>
   )
 }
