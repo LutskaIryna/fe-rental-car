@@ -9,12 +9,13 @@ import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } 
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
-import { useGetAvailableCarsQuery } from "@/store/api/car.api";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { useGetCarsQuery } from "@/store/api/car.api";
+import { RentalStateOfCar } from "@/types/enums";
 
 export const RentalCreateModal = () => {
   const isUser = useIsUser();
-  const { data: cars } = useGetAvailableCarsQuery(undefined, {
+  const { data: cars } = useGetCarsQuery({filter: RentalStateOfCar.AVAILABLE}, {
       skip: !isUser,
     });
   const [createRental] = useCreateRentalMutation();
