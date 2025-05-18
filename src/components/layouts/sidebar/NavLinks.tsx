@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 
 export const navItems = [
   { label: "Rentals", to: "/rentals", roles: [UserRole.USER] },
-  { label: "Cars", to: "/cars", roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN] },
+  { label: "Cars", to: "/cars", roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.USER] },
   { label: "Admin", to: "/admin", roles: [UserRole.ADMIN, UserRole.SUPER_ADMIN] },
 ];
 
