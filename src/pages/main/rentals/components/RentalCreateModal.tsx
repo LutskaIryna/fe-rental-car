@@ -81,7 +81,7 @@ export const RentalCreateModal = () => {
               <SelectContent>
                 {cars?.map((car: ICar) => (
                   <SelectItem key={car.id} value={car.id}>
-                    {car.brand} {car.model} ({car.year})
+                    {car.brand.name} {car.model.name} ({car.year})
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -103,7 +103,7 @@ export const RentalCreateModal = () => {
                     return true;
                   }
                 })}
-                max={today}
+                min={today}
               />
               {errors.startDate && (
                 <p className="text-sm text-red-500">{errors.startDate.message}</p>
