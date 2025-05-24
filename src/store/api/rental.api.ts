@@ -14,7 +14,6 @@ export const rentalApi = api.injectEndpoints({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          console.log(data);
 
           if (data) {
             dispatch(setActiveUserRental(data));
