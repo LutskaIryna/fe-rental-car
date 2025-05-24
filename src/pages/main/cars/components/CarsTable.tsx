@@ -53,10 +53,10 @@ export const CarsTable = ({ cars, isLoading }: CarsTableProps) => {
           {rowsToShow.map((car, index) => (
             <tr key={car?.id || index} className="border-t">
               <td className="px-4 py-2">
-                {isLoading ? <Skeleton className="h-4 w-24" /> : car?.brand}
+                {isLoading ? <Skeleton className="h-4 w-24" /> : car?.brand.name}
               </td>
               <td className="px-4 py-2">
-                {isLoading ? <Skeleton className="h-4 w-24" /> : car?.model}
+                {isLoading ? <Skeleton className="h-4 w-24" /> : car?.model.name}
               </td>
               <td className="px-4 py-2">
                 {isLoading ? <Skeleton className="h-4 w-20" /> : car?.color}
