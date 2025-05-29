@@ -36,14 +36,11 @@ export const CarCreateModal = () => {
 
   const handleModelSelect = (modelId: string) => {
     setValue("modelId", modelId);
-    console.log(modelId)
-
     const selectedModel = models.find((m: IItem) => m.id === modelId);
-    console.log(selectedModel?.brandId)
     if (selectedModel?.brandId) {
       setValue("brandId", selectedModel.brandId);
     }
-};
+  };
 
   const handleDialogChange = (isOpen: boolean) => {
     setOpen(isOpen);
