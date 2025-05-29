@@ -20,7 +20,7 @@ export const RentalsPage = () => {
       <CardContent>
           {activeRental ? (
             <div className="space-y-2">
-              <p><strong>Car:</strong> {activeRental.car.model} ({activeRental.car.brand})</p>
+              <p><strong>Car:</strong> {activeRental.car.model.name} ({activeRental.car.brand.name})</p>
               <p><strong>Start Date:</strong> {new Date(activeRental.startDate).toLocaleDateString()}</p>
               <p><strong>End Date:</strong> {new Date(activeRental.endDate).toLocaleDateString()}</p>
             </div>
