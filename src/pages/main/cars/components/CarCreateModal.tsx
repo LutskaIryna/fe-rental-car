@@ -9,7 +9,7 @@ import { useIsAdmin } from "@/hooks/useUser";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useGetBrandsQuery, useGetModelsQuery } from "@/store/api/brand-model.api";
 import { setModels } from "@/store/slices/carSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 export const CarCreateModal = () => {
@@ -44,11 +44,15 @@ export const CarCreateModal = () => {
 
   const handleDialogChange = (isOpen: boolean) => {
     setOpen(isOpen);
-    if (!isOpen) {
+  };
+
+  useEffect(() => {
+    if (!open) {
       dispatch(setModels([]));
       reset();
     }
-  };
+  }, [open]);
+
   const onSubmit = async (data: ICarFormData) => {
     try {
       await createCar(data).unwrap(); 
