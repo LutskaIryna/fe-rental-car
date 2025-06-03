@@ -17,14 +17,8 @@ export interface ICarFormData {
 }
 export interface ICar extends ICarFormData {
   id: string;
-  brand: {
-    id: string;
-    name: string;
-  };
-  model: {
-    id: string;
-    name: string;
-  };
+  brand: IItem;
+  model: IItem;
 }
 
 export interface IRentalFormData {
@@ -38,4 +32,9 @@ export interface IRentalFormData {
 export interface IRental extends IRentalFormData {
   id: string;
   car: ICar;
+}
+
+export interface IItem {
+  id: string;
+  name: string;
 }
