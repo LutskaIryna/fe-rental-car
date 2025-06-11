@@ -5,12 +5,14 @@ type CarState = {
   cars: ICar[] | null;
   brands: IItem[];
   models: IItem[];
+  colorList: string[];
 };
 
 const initialState: CarState = {
   cars: null,
   brands: [],
   models: [],
+  colorList: [],
 };
 
 const carSlice = createSlice({
@@ -25,6 +27,9 @@ const carSlice = createSlice({
     },
     setModels: (state, action: PayloadAction<IItem[]>) => {
       state.models = action.payload;
+    },
+    setColorList: (state, action: PayloadAction<string[]>) => {
+      state.colorList = action.payload;
     },
   },
 });

@@ -76,7 +76,7 @@ export const CarCreateModal = () => {
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <Select value={watch("brandId") || ""}
+            <Select value={selectedBrandId || ""}
               onValueChange={(value) => setValue("brandId", value)}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select Brand" />

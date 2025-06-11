@@ -13,7 +13,7 @@ export interface ICarFormData {
   modelId: string;
   color: string;
   plateNumber: string;
-  year: string;
+  year: number;
 }
 export interface ICar extends ICarFormData {
   id: string;
