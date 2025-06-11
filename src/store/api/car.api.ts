@@ -8,11 +8,18 @@ export const carApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getCars: builder.query<
       any,
-      { filter: RentalStateOfCar; brand?: string; vin?: string; model?: string }
+      {
+        filter: RentalStateOfCar;
+        brand?: string;
+        vin?: string;
+        model?: string;
+        color?: string;
+        year?: number;
+      }
     >({
-      query: ({ filter }) => ({
+      query: (queryParams) => ({
         url: "/rental-cars",
-        params: { filter },
+        params: queryParams,
       }),
       providesTags: ["Cars"],
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
@@ -42,7 +49,28 @@ export const carApi = api.injectEndpoints({
       }),
       invalidatesTags: ["Cars"],
     }),
+    getCarColorList: builder.query<any, void>({
+      query: () => ({
+        url: "/rental-cars/colors",
+      }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          if (data) {
+            dispatch(setCars(data));
+          }
+        } catch (error) {
+          console.error("Error while fetching cars:", error);
+          toast.error("Error while fetching cars");
+        }
+      },
+    }),
   }),
 });
 
-export const { useGetCarsQuery, useDeleteCarMutation, useCreateCarMutation } = carApi;
+export const {
+  useGetCarsQuery,
+  useDeleteCarMutation,
+  useCreateCarMutation,
+  useGetCarColorListQuery,
+} = carApi;
