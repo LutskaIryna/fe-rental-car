@@ -1,5 +1,5 @@
-import { User } from '@/types/types';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { User } from "@/types/types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type AuthState = {
   user: User | null;
@@ -9,12 +9,12 @@ type AuthState = {
 
 const initialState: AuthState = {
   user: null,
-  token: localStorage.getItem('access_token'),
+  token: localStorage.getItem("access_token"),
   users: [],
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     login: (state, action: PayloadAction<{ token: string }>) => {

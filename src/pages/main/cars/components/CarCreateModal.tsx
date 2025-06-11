@@ -2,21 +2,57 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DialogHeader, Dialog, DialogTrigger, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useForm } from "react-hook-form";
-import { ICarFormData } from "@/types/interfaces";
+import { ICarFormData, IItem } from "@/types/interfaces";
 import { useCreateCarMutation } from "@/store/api/car.api";
 import { toast } from "sonner";
 import { useIsAdmin } from "@/hooks/useUser";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useGetBrandsQuery, useGetModelsQuery } from "@/store/api/brand-model.api";
+import { setModels } from "@/store/slices/carSlice";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 export const CarCreateModal = () => {
   const {
       register,
       handleSubmit,
       reset,
+      setValue,
+      watch,
       formState: { errors },
   } = useForm<ICarFormData>();
-
-  const [createCar, { isLoading }] = useCreateCarMutation(); 
+  const selectedBrandId = watch("brandId");
   const isAdmin = useIsAdmin();
+
+  const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const [createCar, { isLoading }] = useCreateCarMutation(); 
+  const { data: brands = []} = useGetBrandsQuery(undefined, {
+     skip: !open
+  });
+  const { data: models = [] } = useGetModelsQuery(selectedBrandId || '', {
+    skip: !open 
+  }) ;
+
+  const handleModelSelect = (modelId: string) => {
+    setValue("modelId", modelId);
+    const selectedModel = models.find((m: IItem) => m.id === modelId);
+    if (selectedModel?.brandId) {
+      setValue("brandId", selectedModel.brandId);
+    }
+  };
+
+  const handleDialogChange = (isOpen: boolean) => {
+    setOpen(isOpen);
+  };
+
+  useEffect(() => {
+    if (!open) {
+      dispatch(setModels([]));
+      reset();
+    }
+  }, [open]);
+
   const onSubmit = async (data: ICarFormData) => {
     try {
       await createCar(data).unwrap(); 
@@ -29,7 +65,7 @@ export const CarCreateModal = () => {
     }
   };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={handleDialogChange}>
       <DialogTrigger asChild>
         {isAdmin && <Button variant="default">Add Car</Button>}
       </DialogTrigger>
@@ -40,23 +76,38 @@ export const CarCreateModal = () => {
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <Input
-              type="text"
-              placeholder="Brand"
-              {...register("brand", { required: "Brand is required" })}
-            />
-            {errors.brand && (
-              <p className="text-sm text-red-500 mt-1">{errors.brand.message}</p>
+            <Select value={watch("brandId") || ""}
+              onValueChange={(value) => setValue("brandId", value)}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Brand" />
+              </SelectTrigger>
+              <SelectContent>
+                {brands?.map((brand: IItem) => (
+                  <SelectItem key={brand.id} value={brand.id}>
+                    {brand.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.brandId && (
+              <p className="text-sm text-red-500 mt-1">{errors.brandId.message}</p>
             )}
           </div>
           <div>
-            <Input
-              type="text"
-              placeholder="Model"
-              {...register("model", { required: "Model is required" })}
-            />
-            {errors.model && (
-              <p className="text-sm text-red-500 mt-1">{errors.model.message}</p>
+            <Select onValueChange={handleModelSelect}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select Model" />
+              </SelectTrigger>
+              <SelectContent>
+                {models?.map((model: IItem) => (
+                  <SelectItem key={model.id} value={model.id}>
+                    {model.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            {errors.modelId && (
+              <p className="text-sm text-red-500 mt-1">{errors.modelId.message}</p>
             )}
           </div>
           <div>
