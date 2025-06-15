@@ -15,6 +15,7 @@ export const carApi = api.injectEndpoints({
         model?: string;
         color?: string;
         year?: number;
+        query?: string;
       }
     >({
       query: (queryParams) => ({
