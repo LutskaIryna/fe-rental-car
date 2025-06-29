@@ -2,8 +2,7 @@ import { login, logout, setUser, setUsers } from "../slices/authSlice";
 import { api } from "./api";
 
 export const authApi = api.injectEndpoints({
-  endpoints: builder => ({
-
+  endpoints: (builder) => ({
     getUser: builder.query<any, void>({
       query: () => "/user/me",
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
@@ -17,6 +16,7 @@ export const authApi = api.injectEndpoints({
           dispatch(logout());
         }
       },
+      providesTags: ["Users"],
     }),
 
     getUsers: builder.query<any, void>({
@@ -29,24 +29,27 @@ export const authApi = api.injectEndpoints({
             dispatch(setUsers(data));
           }
         } catch (error) {
-          console.error("Error while fetching users:", error)
+          console.error("Error while fetching users:", error);
         }
-      }
+      },
     }),
-    registerUserWithRole: builder.mutation<any, { email: string; password: string; role: string;}>({
+    registerUserWithRole: builder.mutation<any, { email: string; password: string; role: string }>({
       query: ({ email, password, role }) => ({
         url: "/user/register",
         method: "POST",
         body: { email, password, role },
-      })
+      }),
     }),
-    registerUserWithRoleAdmin: builder.mutation<any, { email: string; password: string; role: string;}>({
+    registerUserWithRoleAdmin: builder.mutation<
+      any,
+      { email: string; password: string; role: string }
+    >({
       query: ({ email, password, role }) => ({
         url: "/user/register-role",
         method: "POST",
         body: { email, password, role },
       }),
-      invalidatesTags: ["Users"]
+      invalidatesTags: ["Users"],
     }),
 
     loginUser: builder.mutation<any, { email: string; password: string }>({
@@ -60,11 +63,11 @@ export const authApi = api.injectEndpoints({
         if (data) {
           dispatch(login({ token: data.access_token }));
         }
-      }
+      },
     }),
 
-    logoutUser : builder.mutation<any, string>({
-      query: (accessToken) => ({      
+    logoutUser: builder.mutation<any, string>({
+      query: (accessToken) => ({
         url: "/auth/logout",
         method: "POST",
         token: accessToken,
@@ -74,10 +77,18 @@ export const authApi = api.injectEndpoints({
         if (data) {
           dispatch(logout());
         }
-      }
+      },
     }),
-  })
-})
+
+    deleteUser: builder.mutation<any, string>({
+      query: (id) => ({
+        url: `/user/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Users"],
+    }),
+  }),
+});
 
 export const {
   useGetUserQuery,
@@ -85,5 +96,6 @@ export const {
   useLoginUserMutation,
   useLogoutUserMutation,
   useRegisterUserWithRoleAdminMutation,
-  useGetUsersQuery
+  useGetUsersQuery,
+  useDeleteUserMutation,
 } = authApi;
