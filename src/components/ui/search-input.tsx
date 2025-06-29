@@ -1,4 +1,5 @@
 import { Input } from "@/components/ui/input";
+import { useDebounce } from "@/hooks/useDebounce";
 import { useState, useEffect } from "react";
 
 interface CarSearchInputProps {
@@ -7,14 +8,11 @@ interface CarSearchInputProps {
 
 export const CarSearchInput = ({ setQuery }: CarSearchInputProps) => {
   const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 500);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setQuery(search.trim());
-    }, 500);
-
-    return () => clearTimeout(timeout);
-  }, [search, setQuery]);
+    setQuery(debouncedSearch.trim());
+  }, [debouncedSearch, setQuery]);
 
   return (
     <Input
