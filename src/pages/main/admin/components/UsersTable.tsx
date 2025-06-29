@@ -1,5 +1,6 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { User } from "@/types/types";
+import { DeleteUserButton } from "./DeleteUser";
 
 type UserTableProps = {
   users: User[];
@@ -13,7 +14,7 @@ export const UserTable: React.FC<UserTableProps> = ({ users }) => {
           <TableRow>
             <TableHead>ID</TableHead>
             <TableHead>Email</TableHead>
-            <TableHead>Role</TableHead>
+            <TableHead>Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -21,7 +22,9 @@ export const UserTable: React.FC<UserTableProps> = ({ users }) => {
             <TableRow key={user.id}>
               <TableCell>{user.id}</TableCell>
               <TableCell>{user.email}</TableCell>
-              <TableCell>{user.role}</TableCell>
+              <TableCell>
+                 <DeleteUserButton userId={user.id} />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
