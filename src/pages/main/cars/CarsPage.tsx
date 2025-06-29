@@ -5,15 +5,23 @@ import { useGetCarsQuery } from "@/store/api/car.api";
 import { useState } from "react";
 import { RentalStateOfCar } from "@/types/enums";
 import { useIsAdmin } from "@/hooks/useUser";
+import { CarAdvancedFilter } from "./components/CarAdvancedFilter";
 
 export default function CarsPage() {
 
   const isAdmin = useIsAdmin();
   const initialFilter = isAdmin ? RentalStateOfCar.ALL : RentalStateOfCar.AVAILABLE;
   const [filter, setFilter] = useState<RentalStateOfCar>(initialFilter);
+  const [queryParams, setQueryParams] = useState<{
+    brand?: string;
+    vin?: string;
+    model?: string;
+    color?: string;
+    year?: number;
+  }>({});
 
   const { data: cars = [], isLoading } = useGetCarsQuery(
-    { filter },
+    { filter, ...queryParams },
     { skip: !filter || (!isAdmin && filter !== RentalStateOfCar.AVAILABLE) }
   );
 
@@ -22,6 +30,7 @@ export default function CarsPage() {
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-2xl font-bold">Rental Cars</h3>
         <div className="flex items-center gap-4">
+          <CarAdvancedFilter setQueryParams={setQueryParams}/>     
           <FilterCar filter={filter} setFilter={setFilter} disabled={!isAdmin}/>
           <CarCreateModal />
         </div>
